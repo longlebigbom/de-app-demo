@@ -11,6 +11,7 @@
         margin-top: 7px;
 
         input {
+            text-align: center;
             padding: 5px 10px;
             font-size: 15px;
             border-radius: 3px;
@@ -37,6 +38,13 @@
         font-weight: 700;
         background: #007bff;
         text-transform: uppercase;
+
+        &.disabled,
+        &.disabled:hover {
+            background: #ccc;
+            border: 1px solid #ccc;
+            cursor: default;
+        }
 
         &:hover {
             border-color: #0069d9;

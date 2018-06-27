@@ -6,13 +6,20 @@ import asyncComponent from '../components/_asynComponent';
 // import AsyncProducts from '../components/Products';
 // import AsyncMyComApi from '../components/myComApi';
 
-const AsyncHome = asyncComponent(() => import('../components/Home'));
+const AsyncSetToken = asyncComponent(() => import('../components/_deApp/setToken'));
+const AsyncSetWhiteList = asyncComponent(() => import('../components/_deApp/setWhiteList'));
 
 const routersAuthen = [
     {
-        title: 'Home',
+        title: 'Set Token',
         path: '/',
-        component: AsyncHome,
+        component: AsyncSetToken,
+        exact: true
+    },
+    {
+        title: 'Set WhiteList',
+        path: '/whitelist',
+        component: AsyncSetWhiteList,
         exact: true
     }
 ];

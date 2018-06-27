@@ -8,6 +8,7 @@
   .date .react-datepicker-wrapper {
     margin-top: 7px; }
     .date .react-datepicker-wrapper input {
+      text-align: center;
       padding: 5px 10px;
       font-size: 15px;
       border-radius: 3px;
@@ -28,6 +29,10 @@
     font-weight: 700;
     background: #007bff;
     text-transform: uppercase; }
+    .btn-list button.disabled, .btn-list button.disabled:hover {
+      background: #ccc;
+      border: 1px solid #ccc;
+      cursor: default; }
     .btn-list button:hover {
       border-color: #0069d9;
       background: #0069d9;
