@@ -17,6 +17,10 @@
       .date .react-datepicker-wrapper input:focus {
         border-color: #111; }
 
+.err {
+  margin-top: 20px;
+  color: #ff0000; }
+
 .btn-list {
   margin-top: 20px; }
   .btn-list button {
@@ -37,3 +41,10 @@
       border-color: #0069d9;
       background: #0069d9;
       cursor: pointer; }
+
+.transId {
+  margin-top: 20px; }
+  .transId p {
+    font-size: 17px; }
+    .transId p.lblSucc {
+      color: #13a000; }

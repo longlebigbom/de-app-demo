@@ -25,6 +25,11 @@
     }
 }
 
+.err {
+    margin-top: 20px;
+    color: #ff0000;
+}
+
 .btn-list {
     margin-top: 20px;
 
@@ -50,6 +55,18 @@
             border-color: #0069d9;
             background: #0069d9;
             cursor: pointer;
+        }
+    }
+}
+
+.transId {
+    margin-top: 20px;
+
+    p {
+        font-size: 17px;
+
+        &.lblSucc {
+            color: rgb(19, 160, 0);
         }
     }
 }
