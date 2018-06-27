@@ -1,0 +1,47 @@
+.deApp {
+    width: 500px;
+    margin: 30px auto 0;
+}
+
+.date {
+    display: inline-block;
+    width: 50%;
+
+    .react-datepicker-wrapper {
+        margin-top: 7px;
+
+        input {
+            padding: 5px 10px;
+            font-size: 15px;
+            border-radius: 3px;
+            border: 1px solid rgb(221, 220, 220);
+            outline: none;
+
+            &:focus {
+                border-color: #111;
+            }
+        }
+    }
+}
+
+.btn-list {
+    margin-top: 20px;
+
+    button {
+        outline: none;
+        color: #fff;
+        padding: 5px 20px;
+        border-radius: 3px;
+        border: 1px solid #007bff;
+        font-size: 20px;
+        font-weight: 700;
+        background: #007bff;
+        text-transform: uppercase;
+
+        &:hover {
+            border-color: #0069d9;
+            background: #0069d9;
+            cursor: pointer;
+        }
+    }
+}
