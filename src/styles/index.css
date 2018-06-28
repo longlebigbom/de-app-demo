@@ -36,6 +36,16 @@ body {
 * {
   box-sizing: border-box; }
 
+p {
+  font-size: 16px; }
+
+input[type='text'] {
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  outline: none;
+  color: #111; }
+
 .main-container {
   padding: 0 20px; }
 

@@ -4,9 +4,7 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import './deApp.css';
-import { abiArr, whitelistAbi, inputCtList } from './dataConfig';
-import { rejects } from 'assert';
-import { resolve } from 'uri-js';
+import { abiArr } from './dataConfig';
 
 const web3 = global.web3;
 class setToken extends PureComponent {
@@ -48,10 +46,12 @@ class setToken extends PureComponent {
                 errorMess: 'End time must be greater than start time'
             });
         } else {
-            this.setState({
-                isError: false,
-                errorMess: null
-            });
+            setTimeout(() => {
+                this.setState({
+                    isError: false,
+                    errorMess: null
+                });
+            }, 300);
         }
     }
 
@@ -70,8 +70,7 @@ class setToken extends PureComponent {
 
         this.setState({
             isError: false,
-            errorMess: null,
-            isLoading: true
+            errorMess: null
         });
 
         const contractAddress = '0xe3e414b735d2af6d24e4d93d00a826f9f08d1743';
@@ -80,6 +79,9 @@ class setToken extends PureComponent {
         const tsEnd = parseInt(endDate.toDate().getTime() / 1000, 10);
         const dataSent = contract.setTimeSale.getData(tsStart, tsEnd);
 
+        this.setState({
+            isLoading: true
+        });
         web3.eth.getTransactionCount(web3.eth.defaultAccount, (err1, resTrans) => {
             if (err1) {
                 this.setState({
@@ -144,7 +146,7 @@ class setToken extends PureComponent {
     }
 
     render() {
-        const { startDate, endDate, isError, errorMess, idTransaction, isLoading, resSendTrans } = this.state;
+        const { startDate, endDate, isError, errorMess, idTransaction, isLoading } = this.state;
 
         return (
             <div className="deApp">
@@ -160,6 +162,7 @@ class setToken extends PureComponent {
                         dateFormat="DD/MM/YYYY HH:mm"
                         timeCaption="time"
                         onBlur={this.handleOnBlur}
+                        disabled={isLoading}
                     />
                 </div>
                 <div className="date start">
@@ -174,11 +177,12 @@ class setToken extends PureComponent {
                         dateFormat="DD/MM/YYYY HH:mm"
                         timeCaption="time"
                         onBlur={this.handleOnBlur}
+                        disabled={isLoading}
                     />
                 </div>
                 {errorMess && <div className="err">{errorMess}</div>}
                 <div className="btn-list">
-                    <button className={isError ? 'disabled' : ''} onClick={!isError ? this.onSubmit : null}>
+                    <button className={isError || isLoading ? 'disabled' : ''} onClick={!isError && !isLoading ? this.onSubmit : null}>
                         Set
                     </button>
                 </div>
