@@ -6,8 +6,10 @@ import asyncComponent from '../components/_asynComponent';
 // import AsyncProducts from '../components/Products';
 // import AsyncMyComApi from '../components/myComApi';
 
-const AsyncSetToken = asyncComponent(() => import('../components/_deApp/setToken'));
-const AsyncSetWhiteList = asyncComponent(() => import('../components/_deApp/setWhiteList'));
+import AsyncSetToken from '../components/_deApp/setToken';
+import AsyncSetWhiteList from '../components/_deApp/setWhiteList';
+// const AsyncSetToken = asyncComponent(() => import('../components/_deApp/setToken'));
+// const AsyncSetWhiteList = asyncComponent(() => import('../components/_deApp/setWhiteList'));
 
 const routersAuthen = [
     {

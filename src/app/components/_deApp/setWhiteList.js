@@ -4,6 +4,18 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './deApp.css';
 import { whitelistAbi } from './dataConfig';
 
+const callMethod = (method, ...params) => {
+    return new Promise((resolve, rejects) => {
+        method(...params, (err, result) => {
+            if (err) {
+                rejects(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
+
 const web3 = global.web3;
 class setWhiteList extends PureComponent {
     constructor(props) {
@@ -58,87 +70,48 @@ class setWhiteList extends PureComponent {
         });
         const errText = 'Some thing went wrong';
         const contractAddress = '0xda1e36e8b0f441f6a59957a3dac20389ba4a260f';
+        // 0x2fAEFB5bAf61A38A25fdF0A177C45A1fcd3b89B2
         const contract = web3.eth.contract(whitelistAbi).at(contractAddress);
         const dataSend = contract.listAddress.getData(listAdd, minCap, maxCap);
 
-        web3.eth.getTransactionCount(web3.eth.defaultAccount, (errTrans, resultTrans) => {
-            if (errTrans) {
-                this.setState({
-                    isError: true,
-                    errorMess: errText
-                });
-            } else {
-                web3.eth.estimateGas(
-                    {
-                        to: contractAddress,
-                        data: dataSend
-                    },
-                    (errEst, resultEst) => {
-                        if (errEst) {
-                            this.setState({
-                                isError: true,
-                                errorMess: errText
-                            });
-                        } else {
-                            const rawTransaction = {
-                                from: web3.eth.defaultAccount,
-                                to: contractAddress,
-                                nonce: web3.toHex(resultTrans),
-                                gasPrice: web3.toHex(web3.toWei(0.00000003)),
-                                gasLimit: web3.toHex(resultEst),
-                                value: '0x00',
-                                data: dataSend
-                            };
+        (async () => {
+            const getTransaction = callMethod(web3.eth.getTransactionCount, web3.eth.defaultAccount);
+            const getEstGas = callMethod(web3.eth.estimateGas, { to: contractAddress, data: dataSend });
+            await getTransaction;
+            await getEstGas;
 
-                            web3.eth.sendTransaction(rawTransaction, (errSendTrans, resultSendTrans) => {
-                                if (errSendTrans) {
-                                    this.setState({
-                                        isError: true,
-                                        errorMess: errText
-                                    });
-                                } else {
-                                    this.intervalId = setInterval(() => {
-                                        web3.eth.getTransactionReceipt(resultSendTrans, (errGetTrans, value) => {
-                                            if (errGetTrans) {
-                                                this.setState({
-                                                    isError: true,
-                                                    errorMess: errText
-                                                });
-                                                clearInterval(this.intervalId);
-                                            } else if (value) {
-                                                this.setState({
-                                                    isError: false,
-                                                    isLoading: false,
-                                                    errorMess: null,
-                                                    idTransaction: value.transactionHash.toString()
-                                                });
-                                                clearInterval(this.intervalId);
-                                            }
-                                        });
-                                    }, 10000);
-                                }
-                            });
-                        }
+            const rawTransaction = {
+                from: web3.eth.defaultAccount,
+                to: contractAddress,
+                nonce: web3.toHex(getTransaction),
+                gasPrice: web3.toHex(web3.toWei(0.00000003)),
+                gasLimit: web3.toHex(getEstGas),
+                value: '0x00',
+                data: dataSend
+            };
+            const getSendTrans = await callMethod(web3.eth.sendTransaction, rawTransaction);
+
+            this.intervalId = setInterval(() => {
+                web3.eth.getTransactionReceipt(getSendTrans, (errGetTrans, value) => {
+                    if (errGetTrans) {
+                        this.setState({
+                            isError: true,
+                            errorMess: errText
+                        });
+                        clearInterval(this.intervalId);
+                    } else if (value) {
+                        console.log('value: ', value);
+                        this.setState({
+                            isError: false,
+                            isLoading: false,
+                            errorMess: null,
+                            idTransaction: value.transactionHash.toString()
+                        });
+                        clearInterval(this.intervalId);
                     }
-                );
-            }
-        });
-
-        // return new Promise((resolve, rejects) => {
-        //     web3.eth.getTransactionCount(web3.eth.defaultAccount, (err, result) => {
-        //         if (err) {
-        //             rejects(err);
-        //         } else {
-        //             resolve(result);
-        //         }
-        //     });
-        // })
-        //     .then(result => {
-        //         console.log('result: ', result);
-        //     })
-        //     .catch(err => {
-        //         console.log('err: ', err);
-        //     });
+                });
+            }, 10000);
+        })();
     }
 
     render() {
